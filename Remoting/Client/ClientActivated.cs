@@ -14,15 +14,15 @@ namespace Remoting.Client
 
         public void CreateRecord(RecordDataObject o)
         {
-            RecordsDataChangeTransaction.Add(new RecordDataStateObject(o, 1));
+            RecordsDataChangeTransaction.Add(new RecordDataStateObject(o, StateDict.Create));
         }
         public void UpdateRecord(RecordDataObject o)
         {
-            RecordsDataChangeTransaction.Add(new RecordDataStateObject(o, 2));
+            RecordsDataChangeTransaction.Add(new RecordDataStateObject(o, StateDict.Update));
         }
         public void DeleteRecord(RecordDataObject o)
         {
-            RecordsDataChangeTransaction.Add(new RecordDataStateObject(o, 3));
+            RecordsDataChangeTransaction.Add(new RecordDataStateObject(o, StateDict.Delete));
         }
         public void Clear()
         {

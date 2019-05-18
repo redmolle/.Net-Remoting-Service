@@ -12,7 +12,6 @@ namespace Remoting.Server
         public WellKnownSingleton()
         {
             RecordsData = new List<RecordDataObject>();
-
         }
 
         public List<RecordDataObject> GetPersistentData()

@@ -12,11 +12,11 @@ namespace Remoting.Server
 
         }
 
-        public List<KeyValuePair<int, string>> Commit(ClientActivated cao)
+        public List<KeyValuePair<int, bool>> Commit(ClientActivated cao)
         {
-            List<KeyValuePair<int, string>> result = new List<KeyValuePair<int, string>>();
+            List<KeyValuePair<int, bool>> result = new List<KeyValuePair<int, bool>>(); //id объекта, результат комита
 
-            WellKnownSingleton wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "ipc://ServIPC/WellKnownSingleton.soap");
+            WellKnownSingleton wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "MyURI.soap");
 
             foreach(var v in cao.RecordsDataChangeTransaction)
             {
@@ -36,11 +36,14 @@ namespace Remoting.Server
                             wko.Delete(v.Data);
                             break;
                     }
+                    result.Add(
+                        new KeyValuePair<int, bool>(v.id,true)
+                    );
                 }
                 catch(Exception ex)
                 {
                     result.Add(
-                        new KeyValuePair<int, string>(v.id, $"Не удалось {StateDict.Names.FirstOrDefault(w => w.Key == v.id)} запись")
+                        new KeyValuePair<int, bool>(v.id,false)
                     );
                 }
             }
