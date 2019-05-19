@@ -42,9 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\ClientActivated.cs" />
-    <Compile Include="Client\Common\RecordsDataChangeTransaction.cs" />
-    <Compile Include="Client\Common\StateDict.cs" />
-    <Compile Include="Client\Common\RecordDataStateObject.cs" />
+    <Compile Include="Client\RecordsDataChangeTransaction.cs" />
     <Compile Include="Common\RecordDataObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\WellKnownSinglecall.cs" />

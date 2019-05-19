@@ -6,12 +6,13 @@ namespace Remoting.Server
 {
     public class WellKnownSingleton : MarshalByRefObject
     {
-        public int id { get; private set; }
+        public int Count { get; set; }
         private List<RecordDataObject> RecordsData { get; set; }
 
         public WellKnownSingleton()
         {
             RecordsData = new List<RecordDataObject>();
+            Count = RecordsData.Count;
         }
 
         public List<RecordDataObject> GetPersistentData()
@@ -22,16 +23,30 @@ namespace Remoting.Server
         public void Create(RecordDataObject o)
         {
             RecordsData.Add(o);
+            Count = RecordsData.Count;
+
         }
 
-        public void Update(RecordDataObject o)
+        public void Update(RecordDataObject o, RecordDataObject n)
         {
-            RecordsData.Where(w => w.id == o.id).Select(s => s = o ).ToList();
+            RecordDataObject r = RecordsData.First(f => f.id == o.id);
+            if (r.id != o.id || 
+                r.StringField != o.StringField || 
+                r.DateField != o.DateField ||
+
+                o.id != n.id)
+                throw new Exception();
+
+            RecordsData.Where(w => w.id == o.id).Select(s => s = n ).ToList();
+            Count = RecordsData.Count;
+
         }
 
         public void Delete(RecordDataObject o)
         {
             RecordsData = RecordsData.Where(w => w.id != o.id).ToList();
+            Count = RecordsData.Count;
+
         }
     }
 }

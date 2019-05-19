@@ -1,54 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Remoting.Client;
 
 namespace Remoting.Server
 {
     public class WellKnownSinglecall : MarshalByRefObject
     {
-        public WellKnownSinglecall()
+        public int NextRecordID { get { return wko == null ? 0 : wko.Count + 1; } }
+
+        private WellKnownSingleton wko;
+
+        public WellKnownSinglecall() { }
+
+        public void Commit(ClientActivated cao)
         {
-
-        }
-
-        public List<KeyValuePair<int, bool>> Commit(ClientActivated cao)
-        {
-            List<KeyValuePair<int, bool>> result = new List<KeyValuePair<int, bool>>(); //id объекта, результат комита
-
-            WellKnownSingleton wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "MyURI.soap");
-
-            foreach(var v in cao.RecordsDataChangeTransaction)
+            wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "MyURI.soap");
+            foreach (var v in cao.ChangeTransaction)
             {
-                try
+                if (v.Old == null)
+                    wko.Create(v.New);
+                else
                 {
-                    switch (v.state)
-                    {
-                        case StateDict.Create:
-                            wko.Create(v.Data);
-                            break;
-
-                        case StateDict.Update:
-                            wko.Update(v.Data);
-                            break;
-
-                        case StateDict.Delete:
-                            wko.Delete(v.Data);
-                            break;
-                    }
-                    result.Add(
-                        new KeyValuePair<int, bool>(v.id,true)
-                    );
-                }
-                catch(Exception ex)
-                {
-                    result.Add(
-                        new KeyValuePair<int, bool>(v.id,false)
-                    );
+                    if (v.New == null)
+                        wko.Delete(v.Old);
+                    else
+                        wko.Update(v.Old, v.New);
                 }
             }
-
-            return result;
         }
 
         public void Rollback(ClientActivated cao)

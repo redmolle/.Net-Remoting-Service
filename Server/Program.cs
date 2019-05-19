@@ -14,20 +14,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            HttpChannel channel = new HttpChannel(13000);
-            ChannelServices.RegisterChannel(channel);
-
-            RemotingConfiguration.RegisterWellKnownServiceType(
-                typeof(Remoting.Server.WellKnownSingleton),
-                "MyURI.soap",
-                WellKnownObjectMode.Singleton);
-
-            RemotingConfiguration.RegisterWellKnownServiceType(
-                
-                typeof(
-                )
-            RemotingConfiguration.RegisterActivatedServiceType(typeof(Remoting.Client.ClientActivated));
-
+            RemotingConfiguration.Configure("Server.exe.config", false);
 
             Console.ReadLine();
 

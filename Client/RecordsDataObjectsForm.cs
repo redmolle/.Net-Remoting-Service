@@ -17,24 +17,13 @@ namespace Client
 
     public partial class RecordsDataObjectsForm : Form
     {
-        List<RecordDataObject> data;
+        //List<RecordDataObject> data;
         BindingList<RecordDataObject> bindingData;
-        BindingSource source = new BindingSource();
+        //BindingSource source = new BindingSource();
 
         Remoting.Client.ClientActivated cao;
         Remoting.Server.WellKnownSingleton wko;
         Remoting.Server.WellKnownSinglecall callwko;
-
-        //private void UpdateView(object sender, EventArgs e)
-        //{
-        //    RecordsDataObjectsView.Rows.Clear();
-        //    RecordsDataObjectsView.DataSource = data;
-        //    foreach(var r in RecordsDataObjectsView.DataSource)
-        //    {
-        //        RecordsDataObjectsView.Rows.Add
-        //    }
-        //}
-
 
         public RecordsDataObjectsForm()
         {
@@ -44,12 +33,17 @@ namespace Client
             {
                 RemotingConfiguration.Configure("Client.exe.config", false);
 
+
+
                 wko = new Remoting.Server.WellKnownSingleton();
                 callwko = new Remoting.Server.WellKnownSinglecall();
 
-
-                data = new List<RecordDataObject>();
-                UpdateView();
+                bindingData = new BindingList<RecordDataObject>();
+                RecordsDataObjectsView.AutoGenerateColumns = true;
+                RecordsDataObjectsView.DataSource = bindingData;
+                RecordsDataObjectsView.Update();
+                //data = new List<RecordDataObject>();
+                //UpdateView();
 
 
             }
@@ -59,23 +53,23 @@ namespace Client
             }
         }
 
-        private void UpdateView()
-        {
-            bindingData = new BindingList<RecordDataObject>(data);
-            source = new BindingSource(bindingData, null);
-            RecordsDataObjectsView.AutoGenerateColumns = true;
-            RecordsDataObjectsView.DataSource = source;
-        }
+        //private void UpdateView()
+        //{
+        //    bindingData = new BindingList<RecordDataObject>(data);
+        //    source = new BindingSource(bindingData, null);
+        //    RecordsDataObjectsView.AutoGenerateColumns = true;
+        //    RecordsDataObjectsView.DataSource = source;
+        //}
 
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                RecordDataEditor f = new RecordDataEditor(new RecordDataObject(wko.id + 1, string.Empty, DateTime.Now));
+                cao = cao ?? new Remoting.Client.ClientActivated();
+                RecordDataEditor f = new RecordDataEditor(new RecordDataObject(callwko.NextRecordID, string.Empty, DateTime.Now));
                 f.ShowDialog();
-                data.Add(f.o);
-                //RecordsDataObjectsView.DataSource = data;
-                UpdateView();
+                bindingData.Add(f.o);
+                RecordsDataObjectsView.Update();
                 cao.CreateRecord(f.o);
             }
             catch (Exception ex)
@@ -88,13 +82,12 @@ namespace Client
         {
             try
             {
+                cao = cao ?? new Remoting.Client.ClientActivated();
                 RecordDataObject r = RecordsDataObjectsView.SelectedRows[0].DataBoundItem as RecordDataObject;
-
                 RecordDataEditor f = new RecordDataEditor(r);
                 f.ShowDialog();
-
                 RecordsDataObjectsView.Update();
-                cao.UpdateRecord(f.o);
+                cao.UpdateRecord(r, f.o);
             }
             catch (Exception ex)
             {
@@ -106,12 +99,11 @@ namespace Client
         {
             try
             {
+                cao = cao ?? new Remoting.Client.ClientActivated();
                 RecordDataObject r = RecordsDataObjectsView.SelectedRows[0].DataBoundItem as RecordDataObject;
-
-                data.Remove(r);
-
+                bindingData.Remove(r);
                 RecordsDataObjectsView.Update();
-                cao.UpdateRecord(r);
+                cao.DeleteRecord(r);
             }
             catch (Exception ex)
             {
@@ -125,8 +117,7 @@ namespace Client
             try
             {
                 cao = cao ?? new Remoting.Client.ClientActivated();
-
-                data = new List<RecordDataObject>(wko.GetPersistentData());
+                bindingData = new BindingList<RecordDataObject>(wko.GetPersistentData());
                 RecordsDataObjectsView.Update();
             }
             catch (Exception ex)
@@ -140,30 +131,36 @@ namespace Client
             try
             {
                 RecordsDataObjectsView.DefaultCellStyle.BackColor = Color.White;
-                data.Clear();
-                List<RecordDataObject> lst = cao.RecordsDataChangeTransaction.Select(s => s.Data).ToList();
-                data = new List<RecordDataObject>(lst);
-                RecordsDataObjectsView.Update();
-
-                int i = 0;
-                foreach (var r in cao.RecordsDataChangeTransaction)
+                List<RecordsDataChangeTransaction> lst = cao.ChangeTransaction;
+                bindingData = new BindingList<RecordDataObject>();
+                List<Color> colorLst = new List<Color>();
+                foreach(var row in lst)
                 {
-                    Color c = Color.Green;
-                    switch (r.state)
+                    Color c = Color.White;
+                    if (row.Old == null)
                     {
-                        case StateDict.Create:
-                            break;
-
-                        case StateDict.Update:
-                            c = Color.Yellow;
-                            break;
-
-                        case StateDict.Delete:
-                            c = Color.OrangeRed;
-                            break;
+                        c = Color.Green;
+                        bindingData.Add(row.New);
                     }
-                    RecordsDataObjectsView.Rows[i].DefaultCellStyle.BackColor = c;
-                    i++;
+                    else
+                    {
+                        if(row.New == null)
+                        {
+                            c = Color.OrangeRed;
+                            bindingData.Add(row.Old);
+                        }
+                        else
+                        {
+                            c = Color.Yellow;
+                            bindingData.Add(row.New);
+                        }
+                    }
+                    colorLst.Add(c);
+                }
+                RecordsDataObjectsView.Update();
+                for(int i = 0; i < colorLst.Count; i++)
+                {
+                    RecordsDataObjectsView.Rows[i].DefaultCellStyle.BackColor = colorLst.ElementAt(i);
                 }
                 RecordsDataObjectsView.Update();
             }
@@ -177,22 +174,10 @@ namespace Client
         {
             try
             {
-                List<KeyValuePair<int, bool>> lst = callwko.Commit(cao);
-
-
+                RecordsDataObjectsView.DefaultCellStyle.BackColor = Color.White;
+                callwko.Commit(cao);
                 cao.Clear();
-                data = new List<RecordDataObject>(wko.GetPersistentData());
-                RecordsDataObjectsView.Update();
-
-                int i = 0;
-                foreach(var d in data)
-                {
-                    Color c = lst.FirstOrDefault(f => f.Key == d.id).Value ?
-                        Color.Green : Color.OrangeRed;
-                    RecordsDataObjectsView.Rows[i].DefaultCellStyle.BackColor = c;
-                    i++;
-                }
-
+                bindingData = new BindingList<RecordDataObject>(wko.GetPersistentData());
                 RecordsDataObjectsView.Update();
             }
             catch (Exception ex)
@@ -206,7 +191,7 @@ namespace Client
             try
             {
                 RecordsDataObjectsView.DefaultCellStyle.BackColor = Color.White;
-                cao.Clear();
+                callwko.Rollback(cao);
             }
             catch (Exception ex)
             {
