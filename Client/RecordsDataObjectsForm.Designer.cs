@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.RecordsDataObjectsView = new System.Windows.Forms.DataGridView();
+            this.recordDataObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.recordsDataObjectsFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.recordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,29 +42,16 @@
             this.transactionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rollbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.recordDataObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.stringFieldDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dateFieldDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.RecordsDataObjectsView)).BeginInit();
+            this.rdoView = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.recordDataObjectBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordsDataObjectsFormBindingSource)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.recordDataObjectBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rdoView)).BeginInit();
             this.SuspendLayout();
             // 
-            // RecordsDataObjectsView
+            // recordDataObjectBindingSource
             // 
-            this.RecordsDataObjectsView.AutoGenerateColumns = false;
-            this.RecordsDataObjectsView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.RecordsDataObjectsView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idDataGridViewTextBoxColumn,
-            this.stringFieldDataGridViewTextBoxColumn,
-            this.dateFieldDataGridViewTextBoxColumn});
-            this.RecordsDataObjectsView.DataSource = this.recordDataObjectBindingSource;
-            this.RecordsDataObjectsView.Location = new System.Drawing.Point(-1, 27);
-            this.RecordsDataObjectsView.Name = "RecordsDataObjectsView";
-            this.RecordsDataObjectsView.Size = new System.Drawing.Size(800, 422);
-            this.RecordsDataObjectsView.TabIndex = 0;
+            this.recordDataObjectBindingSource.DataSource = typeof(RecordDataObject);
             // 
             // recordsDataObjectsFormBindingSource
             // 
@@ -159,52 +146,37 @@
             this.rollbackToolStripMenuItem.Text = "Rollback";
             this.rollbackToolStripMenuItem.Click += new System.EventHandler(this.rollbackToolStripMenuItem_Click);
             // 
-            // recordDataObjectBindingSource
+            // rdoView
             // 
-            this.recordDataObjectBindingSource.DataSource = typeof(RecordDataObject);
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            this.idDataGridViewTextBoxColumn.DataPropertyName = "id";
-            this.idDataGridViewTextBoxColumn.HeaderText = "id";
-            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            this.idDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // stringFieldDataGridViewTextBoxColumn
-            // 
-            this.stringFieldDataGridViewTextBoxColumn.DataPropertyName = "StringField";
-            this.stringFieldDataGridViewTextBoxColumn.HeaderText = "StringField";
-            this.stringFieldDataGridViewTextBoxColumn.Name = "stringFieldDataGridViewTextBoxColumn";
-            // 
-            // dateFieldDataGridViewTextBoxColumn
-            // 
-            this.dateFieldDataGridViewTextBoxColumn.DataPropertyName = "DateField";
-            this.dateFieldDataGridViewTextBoxColumn.HeaderText = "DateField";
-            this.dateFieldDataGridViewTextBoxColumn.Name = "dateFieldDataGridViewTextBoxColumn";
+            this.rdoView.AllowUserToAddRows = false;
+            this.rdoView.AllowUserToDeleteRows = false;
+            this.rdoView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.rdoView.Location = new System.Drawing.Point(0, 27);
+            this.rdoView.Name = "rdoView";
+            this.rdoView.Size = new System.Drawing.Size(800, 423);
+            this.rdoView.TabIndex = 2;
             // 
             // RecordsDataObjectsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.RecordsDataObjectsView);
+            this.Controls.Add(this.rdoView);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "RecordsDataObjectsForm";
             this.Text = "RecordsDataObjects";
-            ((System.ComponentModel.ISupportInitialize)(this.RecordsDataObjectsView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordDataObjectBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordsDataObjectsFormBindingSource)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.recordDataObjectBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rdoView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView RecordsDataObjectsView;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem recordToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createToolStripMenuItem;
@@ -217,10 +189,8 @@
         private System.Windows.Forms.ToolStripMenuItem commitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rollbackToolStripMenuItem;
         private System.Windows.Forms.BindingSource recordsDataObjectsFormBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn stringFieldDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dateFieldDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource recordDataObjectBindingSource;
+        private System.Windows.Forms.DataGridView rdoView;
     }
 }
 

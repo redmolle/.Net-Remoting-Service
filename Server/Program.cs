@@ -14,10 +14,15 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            RemotingConfiguration.Configure("Server.exe.config", false);
-
+            try
+            {
+                RemotingConfiguration.Configure("Server.exe.config", false);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             Console.ReadLine();
-
         }
     }
 }

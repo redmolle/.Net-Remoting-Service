@@ -17,9 +17,7 @@ namespace Client
 
     public partial class RecordsDataObjectsForm : Form
     {
-        //List<RecordDataObject> data;
         BindingList<RecordDataObject> bindingData;
-        //BindingSource source = new BindingSource();
 
         Remoting.Client.ClientActivated cao;
         Remoting.Server.WellKnownSingleton wko;
@@ -32,20 +30,12 @@ namespace Client
             try
             {
                 RemotingConfiguration.Configure("Client.exe.config", false);
-
-
-
-                wko = new Remoting.Server.WellKnownSingleton();
+                //wko = new Remoting.Server.WellKnownSingleton();
                 callwko = new Remoting.Server.WellKnownSinglecall();
 
+                rdoView.Rows.Clear();
                 bindingData = new BindingList<RecordDataObject>();
-                RecordsDataObjectsView.AutoGenerateColumns = true;
-                RecordsDataObjectsView.DataSource = bindingData;
-                RecordsDataObjectsView.Update();
-                //data = new List<RecordDataObject>();
-                //UpdateView();
-
-
+                rdoView.DataSource = new BindingSource(bindingData, null);
             }
             catch (Exception ex)
             {
@@ -53,23 +43,16 @@ namespace Client
             }
         }
 
-        //private void UpdateView()
-        //{
-        //    bindingData = new BindingList<RecordDataObject>(data);
-        //    source = new BindingSource(bindingData, null);
-        //    RecordsDataObjectsView.AutoGenerateColumns = true;
-        //    RecordsDataObjectsView.DataSource = source;
-        //}
-
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 cao = cao ?? new Remoting.Client.ClientActivated();
-                RecordDataEditor f = new RecordDataEditor(new RecordDataObject(callwko.NextRecordID, string.Empty, DateTime.Now));
+                int id = callwko.NextRecordID + cao.ChangeTransaction.Length;
+                RecordDataEditor f = new RecordDataEditor(new RecordDataObject(id, string.Empty, DateTime.Now));
                 f.ShowDialog();
                 bindingData.Add(f.o);
-                RecordsDataObjectsView.Update();
+                rdoView.Update();
                 cao.CreateRecord(f.o);
             }
             catch (Exception ex)
@@ -83,10 +66,10 @@ namespace Client
             try
             {
                 cao = cao ?? new Remoting.Client.ClientActivated();
-                RecordDataObject r = RecordsDataObjectsView.SelectedRows[0].DataBoundItem as RecordDataObject;
+                RecordDataObject r = rdoView.SelectedRows[0].DataBoundItem as RecordDataObject;
                 RecordDataEditor f = new RecordDataEditor(r);
                 f.ShowDialog();
-                RecordsDataObjectsView.Update();
+                rdoView.Update();
                 cao.UpdateRecord(r, f.o);
             }
             catch (Exception ex)
@@ -100,9 +83,10 @@ namespace Client
             try
             {
                 cao = cao ?? new Remoting.Client.ClientActivated();
-                RecordDataObject r = RecordsDataObjectsView.SelectedRows[0].DataBoundItem as RecordDataObject;
+                RecordDataObject r = rdoView.SelectedRows[0].DataBoundItem as RecordDataObject;
                 bindingData.Remove(r);
-                RecordsDataObjectsView.Update();
+                rdoView.DataSource = new BindingSource(bindingData, null);
+                rdoView.Update();
                 cao.DeleteRecord(r);
             }
             catch (Exception ex)
@@ -113,12 +97,13 @@ namespace Client
 
         private void downloadDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RecordsDataObjectsView.DefaultCellStyle.BackColor = Color.White;
             try
             {
                 cao = cao ?? new Remoting.Client.ClientActivated();
-                bindingData = new BindingList<RecordDataObject>(wko.GetPersistentData());
-                RecordsDataObjectsView.Update();
+                bindingData = new BindingList<RecordDataObject>(callwko.GetData());
+
+                rdoView.DataSource = new BindingSource(bindingData, null);
+                rdoView.Update();
             }
             catch (Exception ex)
             {
@@ -130,39 +115,12 @@ namespace Client
         {
             try
             {
-                RecordsDataObjectsView.DefaultCellStyle.BackColor = Color.White;
-                List<RecordsDataChangeTransaction> lst = cao.ChangeTransaction;
-                bindingData = new BindingList<RecordDataObject>();
-                List<Color> colorLst = new List<Color>();
-                foreach(var row in lst)
-                {
-                    Color c = Color.White;
-                    if (row.Old == null)
-                    {
-                        c = Color.Green;
-                        bindingData.Add(row.New);
-                    }
-                    else
-                    {
-                        if(row.New == null)
-                        {
-                            c = Color.OrangeRed;
-                            bindingData.Add(row.Old);
-                        }
-                        else
-                        {
-                            c = Color.Yellow;
-                            bindingData.Add(row.New);
-                        }
-                    }
-                    colorLst.Add(c);
-                }
-                RecordsDataObjectsView.Update();
-                for(int i = 0; i < colorLst.Count; i++)
-                {
-                    RecordsDataObjectsView.Rows[i].DefaultCellStyle.BackColor = colorLst.ElementAt(i);
-                }
-                RecordsDataObjectsView.Update();
+                List<RecordsDataChangeTransaction> lst = cao.ChangeTransaction.ToList();
+                bindingData = new BindingList<RecordDataObject>(
+                    lst.Select(s => s.New ?? s.Old).ToList()
+                    );
+                rdoView.DataSource = new BindingSource(bindingData, null);
+                rdoView.Update();
             }
             catch (Exception ex)
             {
@@ -174,11 +132,12 @@ namespace Client
         {
             try
             {
-                RecordsDataObjectsView.DefaultCellStyle.BackColor = Color.White;
                 callwko.Commit(cao);
+
+                bindingData = new BindingList<RecordDataObject>(callwko.GetData());
+                rdoView.DataSource = new BindingSource(bindingData, null);
+                rdoView.Update();
                 cao.Clear();
-                bindingData = new BindingList<RecordDataObject>(wko.GetPersistentData());
-                RecordsDataObjectsView.Update();
             }
             catch (Exception ex)
             {
@@ -190,8 +149,9 @@ namespace Client
         {
             try
             {
-                RecordsDataObjectsView.DefaultCellStyle.BackColor = Color.White;
                 callwko.Rollback(cao);
+                bindingData = new BindingList<RecordDataObject>();
+                rdoView.DataSource = new BindingSource(bindingData, null);
             }
             catch (Exception ex)
             {

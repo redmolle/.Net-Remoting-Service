@@ -1,19 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 using Remoting.Client;
 
 namespace Remoting.Server
 {
     public class WellKnownSinglecall : MarshalByRefObject
     {
-        public int NextRecordID { get { return wko == null ? 0 : wko.Count + 1; } }
+        public int NextRecordID
+        {
+            get
+            {
+                wko = new WellKnownSingleton();
+                return wko.Count;
+            }
+        }
 
         private WellKnownSingleton wko;
 
         public WellKnownSinglecall() { }
 
+        public RecordDataObject[] GetData()
+        {
+            wko = new WellKnownSingleton();
+            //wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "http://localhost:13000/MyURI.soap");
+            RecordDataObject[] r = wko.GetPersistentData().ToArray();
+            return r;
+        }
+
         public void Commit(ClientActivated cao)
         {
-            wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "MyURI.soap");
+            wko = new WellKnownSingleton();
+            //wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "http://localhost:13000/MyURI.soap");
             foreach (var v in cao.ChangeTransaction)
             {
                 if (v.Old == null)
