@@ -1,5 +1,6 @@
 ﻿using System;
 
+[Serializable]
 public class RecordDataObject
 {
     public int id { get; private set; }

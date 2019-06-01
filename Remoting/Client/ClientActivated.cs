@@ -5,28 +5,45 @@ namespace Remoting.Client
 {
     public class ClientActivated : MarshalByRefObject
     {
-        public List<RecordDataStateObject> RecordsDataChangeTransaction { get; private set; }
+        private List<RecordsDataChangeTransaction> _ChangeTransaction { get; set; }
+        public RecordsDataChangeTransaction[] ChangeTransaction { get { return _ChangeTransaction.ToArray(); } }
+
 
         public ClientActivated()
         {
-            RecordsDataChangeTransaction = new List<RecordDataStateObject>();
+            _ChangeTransaction = new List<RecordsDataChangeTransaction>();
         }
 
         public void CreateRecord(RecordDataObject o)
         {
-            RecordsDataChangeTransaction.Add(new RecordDataStateObject(o, 1));
+            _ChangeTransaction.Add(new RecordsDataChangeTransaction
+            {
+                Old = null,
+                New = o,
+                ChangeDate = DateTime.Now
+            });
         }
-        public void UpdateRecord(RecordDataObject o)
+        public void UpdateRecord(RecordDataObject o, RecordDataObject n)
         {
-            RecordsDataChangeTransaction.Add(new RecordDataStateObject(o, 2));
+            _ChangeTransaction.Add(new RecordsDataChangeTransaction
+            {
+                Old = o,
+                New = n,
+                ChangeDate = DateTime.Now
+            });
         }
         public void DeleteRecord(RecordDataObject o)
         {
-            RecordsDataChangeTransaction.Add(new RecordDataStateObject(o, 3));
+            _ChangeTransaction.Add(new RecordsDataChangeTransaction
+            {
+                Old = o,
+                New = null,
+                ChangeDate = DateTime.Now
+            });
         }
         public void Clear()
         {
-            RecordsDataChangeTransaction.Clear();
+            _ChangeTransaction.Clear();
         }
     }
 }

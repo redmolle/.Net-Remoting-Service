@@ -1,51 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Remoting.Client;
 
 namespace Remoting.Server
 {
     public class WellKnownSinglecall : MarshalByRefObject
     {
-        public WellKnownSinglecall()
+        public WellKnownSinglecall() { }
+
+        public void Commit(ClientActivated cao)
         {
+            //Remoting.Server.WellKnownSingleton wko = new Remoting.Server.WellKnownSingleton();
 
-        }
-
-        public List<KeyValuePair<int, string>> Commit(ClientActivated cao)
-        {
-            List<KeyValuePair<int, string>> result = new List<KeyValuePair<int, string>>();
-
-            WellKnownSingleton wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "ipc://ServIPC/WellKnownSingleton.soap");
-
-            foreach(var v in cao.RecordsDataChangeTransaction)
-            {
-                try
-                {
-                    switch (v.state)
-                    {
-                        case StateDict.Create:
-                            wko.Create(v.Data);
-                            break;
-
-                        case StateDict.Update:
-                            wko.Update(v.Data);
-                            break;
-
-                        case StateDict.Delete:
-                            wko.Delete(v.Data);
-                            break;
-                    }
-                }
-                catch(Exception ex)
-                {
-                    result.Add(
-                        new KeyValuePair<int, string>(v.id, $"Не удалось {StateDict.Names.FirstOrDefault(w => w.Key == v.id)} запись")
+            WellKnownSingleton wko = 
+                (WellKnownSingleton)Activator.GetObject(
+                    typeof(WellKnownSingleton), 
+                    "http://localhost:13000/MyURITON.soap"
                     );
+            //wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "http://localhost:13000/MyURI.soap");
+            foreach (var v in cao.ChangeTransaction)
+            {
+                if (v.Old == null)
+                    wko.Create(v.New);
+                else
+                {
+                    if (v.New == null)
+                        wko.Delete(v.Old);
+                    else
+                        wko.Update(v.Old, v.New);
                 }
             }
-
-            return result;
         }
 
         public void Rollback(ClientActivated cao)

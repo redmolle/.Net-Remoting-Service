@@ -4,3 +4,9 @@ C:\Users\redmo\source\repos\redmolle\Remoting\obj\Debug\Remoting.csprojAssemblyR
 C:\Users\redmo\source\repos\redmolle\Remoting\obj\Debug\Remoting.csproj.CoreCompileInputs.cache
 C:\Users\redmo\source\repos\redmolle\Remoting\obj\Debug\Remoting.dll
 C:\Users\redmo\source\repos\redmolle\Remoting\obj\Debug\Remoting.pdb
+C:\Users\redmo\source\repos\Vol1\Remoting\bin\Debug\Remoting.dll
+C:\Users\redmo\source\repos\Vol1\Remoting\bin\Debug\Remoting.pdb
+C:\Users\redmo\source\repos\Vol1\Remoting\obj\Debug\Remoting.csproj.CoreCompileInputs.cache
+C:\Users\redmo\source\repos\Vol1\Remoting\obj\Debug\Remoting.dll
+C:\Users\redmo\source\repos\Vol1\Remoting\obj\Debug\Remoting.pdb
+C:\Users\redmo\source\repos\Vol1\Remoting\obj\Debug\Remoting.csprojAssemblyReference.cache
