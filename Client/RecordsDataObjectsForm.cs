@@ -18,6 +18,7 @@ namespace Client
     public partial class RecordsDataObjectsForm : Form
     {
         BindingList<RecordDataObject> bindingData;
+        List<RecordDataObject> Data;
 
         Remoting.Client.ClientActivated cao;
         Remoting.Server.WellKnownSingleton wko;
@@ -30,12 +31,12 @@ namespace Client
             try
             {
                 RemotingConfiguration.Configure("Client.exe.config", false);
-                //wko = new Remoting.Server.WellKnownSingleton();
+                wko = new Remoting.Server.WellKnownSingleton();
                 callwko = new Remoting.Server.WellKnownSinglecall();
 
                 rdoView.Rows.Clear();
-                bindingData = new BindingList<RecordDataObject>();
-                rdoView.DataSource = new BindingSource(bindingData, null);
+                Data = new List<RecordDataObject>();
+                Update();
             }
             catch (Exception ex)
             {
@@ -43,16 +44,23 @@ namespace Client
             }
         }
 
+        private void Update()
+        {
+            bindingData = new BindingList<RecordDataObject>(Data);
+            rdoView.DataSource = new BindingSource(bindingData, null);
+            rdoView.Update();
+        }
+
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 cao = cao ?? new Remoting.Client.ClientActivated();
-                int id = callwko.NextRecordID + cao.ChangeTransaction.Length;
+                int id = wko.Count + cao.ChangeTransaction.Length + 1;
                 RecordDataEditor f = new RecordDataEditor(new RecordDataObject(id, string.Empty, DateTime.Now));
                 f.ShowDialog();
-                bindingData.Add(f.o);
-                rdoView.Update();
+                Data.Add(f.o);
+                Update();
                 cao.CreateRecord(f.o);
             }
             catch (Exception ex)
@@ -84,9 +92,8 @@ namespace Client
             {
                 cao = cao ?? new Remoting.Client.ClientActivated();
                 RecordDataObject r = rdoView.SelectedRows[0].DataBoundItem as RecordDataObject;
-                bindingData.Remove(r);
-                rdoView.DataSource = new BindingSource(bindingData, null);
-                rdoView.Update();
+                Data.Remove(r);
+                Update();
                 cao.DeleteRecord(r);
             }
             catch (Exception ex)
@@ -100,10 +107,9 @@ namespace Client
             try
             {
                 cao = cao ?? new Remoting.Client.ClientActivated();
-                bindingData = new BindingList<RecordDataObject>(callwko.GetData());
-
-                rdoView.DataSource = new BindingSource(bindingData, null);
-                rdoView.Update();
+                //Data = new List<RecordDataObject>(callwko.GetData());
+                Data = new List<RecordDataObject>(wko.GetPersistentData());
+                Update();
             }
             catch (Exception ex)
             {
@@ -116,11 +122,10 @@ namespace Client
             try
             {
                 List<RecordsDataChangeTransaction> lst = cao.ChangeTransaction.ToList();
-                bindingData = new BindingList<RecordDataObject>(
+                Data = new List<RecordDataObject>(
                     lst.Select(s => s.New ?? s.Old).ToList()
                     );
-                rdoView.DataSource = new BindingSource(bindingData, null);
-                rdoView.Update();
+                Update();
             }
             catch (Exception ex)
             {
@@ -134,9 +139,9 @@ namespace Client
             {
                 callwko.Commit(cao);
 
-                bindingData = new BindingList<RecordDataObject>(callwko.GetData());
-                rdoView.DataSource = new BindingSource(bindingData, null);
-                rdoView.Update();
+                //Data = new List<RecordDataObject>(callwko.GetData());
+                Data = new List<RecordDataObject>(wko.GetPersistentData());
+                Update();
                 cao.Clear();
             }
             catch (Exception ex)
@@ -150,8 +155,8 @@ namespace Client
             try
             {
                 callwko.Rollback(cao);
-                bindingData = new BindingList<RecordDataObject>();
-                rdoView.DataSource = new BindingSource(bindingData, null);
+                Data = new List<RecordDataObject>();
+                Update();
             }
             catch (Exception ex)
             {

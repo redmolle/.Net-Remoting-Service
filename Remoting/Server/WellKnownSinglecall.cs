@@ -6,30 +6,17 @@ namespace Remoting.Server
 {
     public class WellKnownSinglecall : MarshalByRefObject
     {
-        public int NextRecordID
-        {
-            get
-            {
-                wko = new WellKnownSingleton();
-                return wko.Count;
-            }
-        }
-
-        private WellKnownSingleton wko;
-
         public WellKnownSinglecall() { }
-
-        public RecordDataObject[] GetData()
-        {
-            wko = new WellKnownSingleton();
-            //wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "http://localhost:13000/MyURI.soap");
-            RecordDataObject[] r = wko.GetPersistentData().ToArray();
-            return r;
-        }
 
         public void Commit(ClientActivated cao)
         {
-            wko = new WellKnownSingleton();
+            //Remoting.Server.WellKnownSingleton wko = new Remoting.Server.WellKnownSingleton();
+
+            WellKnownSingleton wko = 
+                (WellKnownSingleton)Activator.GetObject(
+                    typeof(WellKnownSingleton), 
+                    "http://localhost:13000/MyURITON.soap"
+                    );
             //wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "http://localhost:13000/MyURI.soap");
             foreach (var v in cao.ChangeTransaction)
             {
