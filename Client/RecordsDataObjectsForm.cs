@@ -75,10 +75,12 @@ namespace Client
             {
                 cao = cao ?? new Remoting.Client.ClientActivated();
                 RecordDataObject r = rdoView.SelectedRows[0].DataBoundItem as RecordDataObject;
+                RecordDataObject old = new RecordDataObject(r);
                 RecordDataEditor f = new RecordDataEditor(r);
                 f.ShowDialog();
-                rdoView.Update();
-                cao.UpdateRecord(r, f.o);
+                Data.Where(w => w.id == f.o.id).Select(s => s = f.o).ToList();
+                Update();
+                cao.UpdateRecord(old, f.o);
             }
             catch (Exception ex)
             {

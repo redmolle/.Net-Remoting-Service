@@ -14,4 +14,10 @@ public class RecordDataObject
         StringField = _StringField;
         DateField = _DateField;
     }
+    public RecordDataObject(RecordDataObject r)
+    {
+        id = r.id;
+        StringField = r.StringField;
+        DateField = r.DateField;
+    }
 }

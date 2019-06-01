@@ -30,9 +30,12 @@
         {
             this.StringField = new System.Windows.Forms.TextBox();
             this.DateField = new System.Windows.Forms.DateTimePicker();
-            this.RecordDataID = new System.Windows.Forms.StatusStrip();
+            this.Strip = new System.Windows.Forms.StatusStrip();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.RecordID = new System.Windows.Forms.ToolStripStatusLabel();
+            this.Strip.SuspendLayout();
             this.SuspendLayout();
             // 
             // StringField
@@ -49,12 +52,15 @@
             this.DateField.Size = new System.Drawing.Size(290, 20);
             this.DateField.TabIndex = 1;
             // 
-            // RecordDataID
+            // Strip
             // 
-            this.RecordDataID.Location = new System.Drawing.Point(0, 112);
-            this.RecordDataID.Name = "RecordDataID";
-            this.RecordDataID.Size = new System.Drawing.Size(380, 22);
-            this.RecordDataID.TabIndex = 2;
+            this.Strip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.RecordID});
+            this.Strip.Location = new System.Drawing.Point(0, 112);
+            this.Strip.Name = "Strip";
+            this.Strip.Size = new System.Drawing.Size(380, 22);
+            this.Strip.TabIndex = 2;
             // 
             // label1
             // 
@@ -74,6 +80,16 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "DateField";
             // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
+            // 
+            // RecordID
+            // 
+            this.RecordID.Name = "RecordID";
+            this.RecordID.Size = new System.Drawing.Size(0, 17);
+            // 
             // RecordDataEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -81,12 +97,14 @@
             this.ClientSize = new System.Drawing.Size(380, 134);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.RecordDataID);
+            this.Controls.Add(this.Strip);
             this.Controls.Add(this.DateField);
             this.Controls.Add(this.StringField);
             this.Name = "RecordDataEditor";
             this.Text = "RecordDataEditor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RecordDataEditor_FormClosing);
+            this.Strip.ResumeLayout(false);
+            this.Strip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -96,8 +114,10 @@
 
         private System.Windows.Forms.TextBox StringField;
         private System.Windows.Forms.DateTimePicker DateField;
-        private System.Windows.Forms.StatusStrip RecordDataID;
+        private System.Windows.Forms.StatusStrip Strip;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel RecordID;
     }
 }

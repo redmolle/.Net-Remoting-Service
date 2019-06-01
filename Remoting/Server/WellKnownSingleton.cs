@@ -33,13 +33,15 @@ namespace Remoting.Server
 
         public void Update(RecordDataObject o, RecordDataObject n)
         {
-            RecordsData.Where(f => f.id == o.id && f.StringField == o.StringField && f.DateField == o.DateField).Select(s => s = n ).ToList();
+            RecordsData =
+                RecordsData.Select(s => s.id == o.id && s.StringField == o.StringField && s.DateField == o.DateField ? n : s ).ToList();
 
         }
 
         public void Delete(RecordDataObject o)
         {
-            RecordsData.Remove(o);
+            RecordsData = 
+                RecordsData.Where(w => w.id != o.id || w.StringField != o.StringField || w.DateField != o.DateField).ToList();
             //RecordsData = RecordsData.Where(w => w.id != o.id).ToList();
 
         }

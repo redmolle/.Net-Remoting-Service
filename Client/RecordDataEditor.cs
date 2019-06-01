@@ -22,7 +22,7 @@ namespace Client
 
             StringField.Text = o.StringField ?? string.Empty;
             DateField.Value = o.DateField;
-            RecordDataID.Text = o?.id.ToString();
+            RecordID.Text = o?.id.ToString();
         }
 
         private void RecordDataEditor_FormClosing(object sender, FormClosingEventArgs e)
