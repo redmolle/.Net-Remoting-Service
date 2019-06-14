@@ -12,6 +12,7 @@ namespace Remoting.Client
         public ClientActivated()
         {
             _ChangeTransaction = new List<RecordsDataChangeTransaction>();
+            Console.WriteLine("Remoting.Client.ClientActivated.ClientActivated()");
         }
 
         public void CreateRecord(RecordDataObject o)
@@ -22,6 +23,7 @@ namespace Remoting.Client
                 New = o,
                 ChangeDate = DateTime.Now
             });
+            Console.WriteLine("Remoting.Client.ClientActivated.CreateRecord(RecordDataObject o)");
         }
         public void UpdateRecord(RecordDataObject o, RecordDataObject n)
         {
@@ -31,6 +33,8 @@ namespace Remoting.Client
                 New = n,
                 ChangeDate = DateTime.Now
             });
+            Console.WriteLine("Remoting.Client.ClientActivated.UpdateRecord(RecordDataObject o, RecordDataObject n)");
+
         }
         public void DeleteRecord(RecordDataObject o)
         {
@@ -40,10 +44,12 @@ namespace Remoting.Client
                 New = null,
                 ChangeDate = DateTime.Now
             });
+            Console.WriteLine("Remoting.Client.ClientActivated.DeleteRecord(RecordDataObject o)");
         }
         public void Clear()
         {
             _ChangeTransaction.Clear();
+            Console.WriteLine("Remoting.Client.ClientActivated.Clear()");
         }
     }
 }

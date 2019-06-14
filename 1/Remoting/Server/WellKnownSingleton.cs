@@ -18,7 +18,9 @@ namespace Remoting.Server
             RecordsData.Add(new RecordDataObject(4, "4", DateTime.Now));
             RecordsData.Add(new RecordDataObject(5, "5", DateTime.Now));
             RecordsData.Add(new RecordDataObject(6, "6", DateTime.Now));
+            Console.WriteLine("Remoting.Server.WellKnownSingleton.WellKnownSingleton()");
         }
+
 
         public RecordDataObject[] GetPersistentData()
         {
@@ -28,22 +30,23 @@ namespace Remoting.Server
         public void Create(RecordDataObject o)
         {
             RecordsData.Add(o);
-
+            Console.WriteLine("Remoting.Server.WellKnownSingleton.Create(RecordDataObject o)");
         }
 
         public void Update(RecordDataObject o, RecordDataObject n)
         {
             RecordsData =
-                RecordsData.Select(s => s.id == o.id && s.StringField == o.StringField && s.DateField == o.DateField ? n : s ).ToList();
-
+                RecordsData.Select(s => s.id == o.id && s.StringField == o.StringField && s.DateField == o.DateField ? n : s).ToList();
+            Console.WriteLine("Remoting.Server.WellKnownSingleton.Update(RecordDataObject o, RecordDataObject n)");
         }
 
         public void Delete(RecordDataObject o)
         {
-            RecordsData = 
+            RecordsData =
                 RecordsData.Where(w => w.id != o.id || w.StringField != o.StringField || w.DateField != o.DateField).ToList();
             //RecordsData = RecordsData.Where(w => w.id != o.id).ToList();
-
+            //  Console.WriteLine(Remoting.Server.WellKnownSingleton.Delete());
+            Console.WriteLine("Remoting.Server.WellKnownSingleton.Delete(RecordDataObject o)");
         }
     }
 }
