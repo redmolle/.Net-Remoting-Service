@@ -27,11 +27,7 @@ namespace Client
             }
             else
             {
-                if(mManagedObj.activeClientsCount == 0)
-                {
-                    ILease wko_leaseInfo = (ILease)mManagedObj.InitializeLifetimeService();
-                    wko_leaseInfo.Register(new DisposeSingletonSponsor(mManagedObj));
-                }
+                mManagedObj.Dispose();
                 return TimeSpan.FromSeconds(0);
             }
         }
