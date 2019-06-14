@@ -12,9 +12,9 @@ namespace Remoting.Server
         {
             //Remoting.Server.WellKnownSingleton wko = new Remoting.Server.WellKnownSingleton();
 
-            WellKnownSingleton wko = 
+            WellKnownSingleton wko =
                 (WellKnownSingleton)Activator.GetObject(
-                    typeof(WellKnownSingleton), 
+                    typeof(WellKnownSingleton),
                     "http://localhost:13000/MyURITON.soap"
                     );
             //wko = (WellKnownSingleton)Activator.GetObject(typeof(WellKnownSingleton), "http://localhost:13000/MyURI.soap");
@@ -30,11 +30,13 @@ namespace Remoting.Server
                         wko.Update(v.Old, v.New);
                 }
             }
+            Console.WriteLine("Remoting.Server.WellKnownSinglecall.Commit(ClientActivated cao)");
         }
 
         public void Rollback(ClientActivated cao)
         {
             cao.Clear();
+            Console.WriteLine("Remoting.Server.WellKnownSinglecall.Clear()");
         }
     }
 }
