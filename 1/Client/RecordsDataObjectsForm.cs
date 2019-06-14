@@ -72,6 +72,8 @@ namespace Client
         {
             try
             {
+                if (rdoView.SelectedRows.Count == 0)
+                    throw new Exception("Выбирите строку");
                 cao = cao ?? new Remoting.Client.ClientActivated();
                 RecordDataObject r = rdoView.SelectedRows[0].DataBoundItem as RecordDataObject;
                 RecordDataObject old = new RecordDataObject(r);
@@ -91,6 +93,8 @@ namespace Client
         {
             try
             {
+                if (rdoView.SelectedRows.Count == 0)
+                    throw new Exception("Выбирите строку");
                 cao = cao ?? new Remoting.Client.ClientActivated();
                 RecordDataObject r = rdoView.SelectedRows[0].DataBoundItem as RecordDataObject;
                 Data.Remove(r);
