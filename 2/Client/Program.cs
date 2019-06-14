@@ -20,23 +20,30 @@ namespace Client
 
                 RemotingConfiguration.Configure("Client.exe.config", false);
 
+                var wko = new Remoting.WellKnownSingleton();
+                ILease wko_leaseInfo = (ILease)wko.GetLifetimeService();
+                wko_leaseInfo.Register(new SingletonClientSideSponsor(wko));
+
+
                 var cao = new Remoting.ClientActivated(_name);
-                ILease cao_leaseInfo = (ILease)cao.InitializeLifetimeService();
+                ILease cao_leaseInfo = (ILease)cao.GetLifetimeService();
                 cao_leaseInfo.Register(new ClientSponsor());
                 
-
-
-
-
-                var wko = new Remoting.WellKnownSingleton();
-                ILease wko_leaseInfo = (ILease)wko.InitializeLifetimeService();
-                wko_leaseInfo.Register(new SingletonSponsor(wko));
                 do
                 {
-                    cao.Work();
-                    Console.WriteLine("Connected clients:\n");
-                    Console.WriteLine(string.Concat(wko.PrintConnectedClients().Select(s => s + "\n")));
-                } while (Console.ReadLine() != "q");
+                    try
+                    {
+                        Console.WriteLine("---   Singleton   ---");
+                        Diagnostics.ShowLeaseInfo((ILease)wko.GetLifetimeService());
+                        Console.WriteLine("---   Singleton   ---\n");
+                        Console.WriteLine($"Connected clients:\n{cao.Work()}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Exception!\n{ex.Message}");
+                    }
+
+        } while (Console.ReadLine() != "q");
 
 
 

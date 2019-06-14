@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Lifetime;
+
 
 namespace Remoting
 {
@@ -42,5 +44,16 @@ namespace Remoting
             Console.WriteLine("Remoting.Server.Dispose()");
             GC.SuppressFinalize(this);
         }
+
+        public override object InitializeLifetimeService()
+        {
+            Console.WriteLine("Remoting.WellKnownSingleton.InitializeLifetimeService()");
+            ILease leaseInfo = (ILease)base.InitializeLifetimeService();
+            //leaseInfo.Register(new SingletonServerSideSponsor(this));
+
+            return leaseInfo;
+        }
+
+
     }
 }

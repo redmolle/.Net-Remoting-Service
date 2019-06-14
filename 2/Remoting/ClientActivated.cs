@@ -28,14 +28,17 @@ namespace Remoting
 
         public string Work()
         {
+            Console.WriteLine("---   ClientActivated   ---");
             Diagnostics.ShowLeaseInfo((ILease)this.GetLifetimeService());
+            Console.WriteLine("---   ClientActivated   ---\n");
+
 
             return string.Concat(wko.PrintConnectedClients().Select(s => s + "\n"));
         }
 
         public void Dispose()
         {
-            Console.WriteLine($"Remoting.ClientActivatedDispose() on thread {Thread.CurrentThread.GetHashCode()}");
+            Console.WriteLine($"Remoting.ClientActivated.Dispose() on thread {Thread.CurrentThread.GetHashCode()}");
             wko.DeleteClient(Name);
             GC.SuppressFinalize(this);
         }
