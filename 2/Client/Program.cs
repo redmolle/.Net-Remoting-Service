@@ -22,7 +22,7 @@ namespace Client
 
                 var wko = new Remoting.WellKnownSingleton();
                 ILease wko_leaseInfo = (ILease)wko.GetLifetimeService();
-                wko_leaseInfo.Register(new SingletonClientSideSponsor(wko));
+                wko_leaseInfo.Register(new SingletonSponsor(wko));
 
 
                 var cao = new Remoting.ClientActivated(_name);

@@ -28,9 +28,9 @@ namespace Remoting
 
         public string Work()
         {
-            Console.WriteLine("---   ClientActivated   ---");
+            Console.WriteLine($"\n---   ClientActivated {Name}   ---");
             Diagnostics.ShowLeaseInfo((ILease)this.GetLifetimeService());
-            Console.WriteLine("---   ClientActivated   ---\n");
+            Console.WriteLine($"---   ClientActivated {Name}   ---\n");
 
 
             return string.Concat(wko.PrintConnectedClients().Select(s => s + "\n"));

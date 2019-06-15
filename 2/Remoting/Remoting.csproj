@@ -44,7 +44,6 @@
     <Compile Include="ClientActivated.cs" />
     <Compile Include="Diagnostics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SingletonServerSideSponsor.cs" />
     <Compile Include="WellKnownSingleton.cs" />
     <Compile Include="DisposingSponsor.cs" />
   </ItemGroup>

@@ -7,23 +7,23 @@ using System.Runtime.Remoting.Lifetime;
 
 namespace Client
 {
-    public class SingletonClientSideSponsor: MarshalByRefObject, ISponsor
+    public class SingletonSponsor: MarshalByRefObject, ISponsor
     {
         private int mRenewCount = 0;
         Remoting.WellKnownSingleton mManagedObj;
 
-        public SingletonClientSideSponsor(Remoting.WellKnownSingleton managedObj)
+        public SingletonSponsor(Remoting.WellKnownSingleton managedObj)
         {
             mManagedObj = managedObj;
         }
 
         public TimeSpan Renewal(ILease leaseInfo)
         {
-            Console.WriteLine("Client.SingletonClientSideSponsor.Renewal()");
-            if(mRenewCount < 2)
+            Console.WriteLine("Client.SingletonSponsor.Renewal()");
+            if(mRenewCount < 1)
             {
                 mRenewCount++;
-                return TimeSpan.FromSeconds(5);
+                return leaseInfo.RenewOnCallTime;
             }
             else
             {

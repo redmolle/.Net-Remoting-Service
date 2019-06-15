@@ -14,10 +14,10 @@ namespace Client
         public TimeSpan Renewal(ILease leaseInfo)
         {
             Console.WriteLine("Client.ClientSponsor.Renewal()");
-            if(mRenewCount < 3)
+            if(mRenewCount < 2)
             {
                 mRenewCount++;
-                return TimeSpan.FromSeconds(5);
+                return leaseInfo.RenewOnCallTime;
             }
             else
             {
