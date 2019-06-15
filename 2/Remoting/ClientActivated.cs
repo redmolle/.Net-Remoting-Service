@@ -8,12 +8,17 @@ namespace Remoting
     public class ClientActivated : MarshalByRefObject, IDisposable
     {
         public string Name { get; private set; }
-        private WellKnownSingleton wko = new WellKnownSingleton();
+        private WellKnownSingleton wko;
 
         public ClientActivated(string name)
         {
             Console.WriteLine($"Remoting.ClientActivated(name = {name})");
             Name = name;
+            wko = (WellKnownSingleton)Activator
+                .GetObject(
+                typeof(WellKnownSingleton),
+                "http://localhost:13000/MyURITON.soap");
+
             wko.AddClient(Name);
         }
 
@@ -39,6 +44,10 @@ namespace Remoting
         public void Dispose()
         {
             Console.WriteLine($"Remoting.ClientActivated.Dispose() on thread {Thread.CurrentThread.GetHashCode()}");
+            wko = (WellKnownSingleton)Activator
+                .GetObject(
+                typeof(WellKnownSingleton),
+                "http://localhost:13000/MyURITON.soap");
             wko.DeleteClient(Name);
             GC.SuppressFinalize(this);
         }
