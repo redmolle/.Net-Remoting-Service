@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,15 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Client
-{
-    public partial class RecordDataEditor : Form
-    {
+namespace Client {
+    public partial class RecordDataEditor : Form {
         public RecordDataObject o { get; set; }
 
-
-        public RecordDataEditor(RecordDataObject _o)
-        {
+        public RecordDataEditor(RecordDataObject _o) {
             InitializeComponent();
             o = _o;
 
@@ -25,8 +21,7 @@ namespace Client
             RecordID.Text = o?.id.ToString();
         }
 
-        private void RecordDataEditor_FormClosing(object sender, FormClosingEventArgs e)
-        {
+        private void RecordDataEditor_FormClosing(object sender, FormClosingEventArgs e) {
             o.StringField = StringField.Text;
             o.DateField = DateField.Value;
         }

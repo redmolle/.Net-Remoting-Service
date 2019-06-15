@@ -1,22 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Remoting;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Http;
 
-namespace Client
-{
+namespace Client {
 
-    public partial class RecordsDataObjectsForm : Form
-    {
+    public partial class RecordsDataObjectsForm : Form {
         BindingList<RecordDataObject> bindingData;
         List<RecordDataObject> Data;
 
@@ -24,11 +22,9 @@ namespace Client
         Remoting.Server.WellKnownSingleton wko;
         Remoting.Server.WellKnownSinglecall callwko;
 
-        public RecordsDataObjectsForm()
-        {
+        public RecordsDataObjectsForm() {
             InitializeComponent();
-            try
-            {
+            try {
                 RemotingConfiguration.Configure("Client.exe.config", false);
                 wko = new Remoting.Server.WellKnownSingleton();
                 callwko = new Remoting.Server.WellKnownSinglecall();
@@ -36,24 +32,19 @@ namespace Client
                 rdoView.Rows.Clear();
                 Data = new List<RecordDataObject>();
                 Update();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void Update()
-        {
+        private void Update() {
             bindingData = new BindingList<RecordDataObject>(Data);
             rdoView.DataSource = new BindingSource(bindingData, null);
             rdoView.Update();
         }
 
-        private void createToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void createToolStripMenuItem_Click(object sender, EventArgs e) {
+            try {
                 cao = cao ?? new Remoting.Client.ClientActivated();
                 int id = wko.Count + cao.ChangeTransaction.Length + 1;
                 RecordDataEditor f = new RecordDataEditor(new RecordDataObject(id, string.Empty, DateTime.Now));
@@ -61,17 +52,13 @@ namespace Client
                 Data.Add(f.o);
                 Update();
                 cao.CreateRecord(f.o);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void updateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void updateToolStripMenuItem_Click(object sender, EventArgs e) {
+            try {
                 if (rdoView.SelectedRows.Count == 0)
                     throw new Exception("Выбирите строку");
                 cao = cao ?? new Remoting.Client.ClientActivated();
@@ -82,17 +69,13 @@ namespace Client
                 Data.Where(w => w.id == f.o.id).Select(s => s = f.o).ToList();
                 Update();
                 cao.UpdateRecord(old, f.o);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e) {
+            try {
                 if (rdoView.SelectedRows.Count == 0)
                     throw new Exception("Выбирите строку");
                 cao = cao ?? new Remoting.Client.ClientActivated();
@@ -100,71 +83,53 @@ namespace Client
                 Data.Remove(r);
                 Update();
                 cao.DeleteRecord(r);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void downloadDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void downloadDataToolStripMenuItem_Click(object sender, EventArgs e) {
+            try {
                 cao = cao ?? new Remoting.Client.ClientActivated();
                 //Data = new List<RecordDataObject>(callwko.GetData());
                 Data = new List<RecordDataObject>(wko.GetPersistentData());
                 Update();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void cacheToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void cacheToolStripMenuItem_Click(object sender, EventArgs e) {
+            try {
                 List<RecordsDataChangeTransaction> lst = cao.ChangeTransaction.ToList();
                 Data = new List<RecordDataObject>(
                     lst.Select(s => s.New ?? s.Old).ToList()
-                    );
+                );
                 Update();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void commitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void commitToolStripMenuItem_Click(object sender, EventArgs e) {
+            try {
                 callwko.Commit(cao);
 
                 //Data = new List<RecordDataObject>(callwko.GetData());
                 Data = new List<RecordDataObject>(wko.GetPersistentData());
                 Update();
                 cao.Clear();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void rollbackToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private void rollbackToolStripMenuItem_Click(object sender, EventArgs e) {
+            try {
                 callwko.Rollback(cao);
                 Data = new List<RecordDataObject>();
                 Update();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
         }

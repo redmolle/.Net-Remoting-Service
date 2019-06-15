@@ -1,7 +1,5 @@
-﻿namespace Client
-{
-    partial class RecordsDataObjectsForm
-    {
+namespace Client {
+    partial class RecordsDataObjectsForm {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -11,10 +9,8 @@
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -26,8 +22,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             this.recordDataObjectBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.recordsDataObjectsFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -43,10 +38,10 @@
             this.commitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rollbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rdoView = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.recordDataObjectBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordsDataObjectsFormBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.recordDataObjectBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.recordsDataObjectsFormBindingSource)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.rdoView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.rdoView)).BeginInit();
             this.SuspendLayout();
             // 
             // recordDataObjectBindingSource
@@ -60,9 +55,10 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.recordToolStripMenuItem,
-            this.downloadToolStripMenuItem,
-            this.transactionToolStripMenuItem});
+                this.recordToolStripMenuItem,
+                    this.downloadToolStripMenuItem,
+                    this.transactionToolStripMenuItem
+            });
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -72,9 +68,10 @@
             // recordToolStripMenuItem
             // 
             this.recordToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createToolStripMenuItem,
-            this.updateToolStripMenuItem,
-            this.deleteToolStripMenuItem});
+                this.createToolStripMenuItem,
+                    this.updateToolStripMenuItem,
+                    this.deleteToolStripMenuItem
+            });
             this.recordToolStripMenuItem.Name = "recordToolStripMenuItem";
             this.recordToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.recordToolStripMenuItem.Text = "Record";
@@ -103,8 +100,9 @@
             // downloadToolStripMenuItem
             // 
             this.downloadToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.downloadDataToolStripMenuItem,
-            this.cacheToolStripMenuItem});
+                this.downloadDataToolStripMenuItem,
+                    this.cacheToolStripMenuItem
+            });
             this.downloadToolStripMenuItem.Name = "downloadToolStripMenuItem";
             this.downloadToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
             this.downloadToolStripMenuItem.Text = "Download";
@@ -126,8 +124,9 @@
             // transactionToolStripMenuItem
             // 
             this.transactionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.commitToolStripMenuItem,
-            this.rollbackToolStripMenuItem});
+                this.commitToolStripMenuItem,
+                    this.rollbackToolStripMenuItem
+            });
             this.transactionToolStripMenuItem.Name = "transactionToolStripMenuItem";
             this.transactionToolStripMenuItem.Size = new System.Drawing.Size(80, 20);
             this.transactionToolStripMenuItem.Text = "Transaction";
@@ -166,11 +165,11 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "RecordsDataObjectsForm";
             this.Text = "RecordsDataObjects";
-            ((System.ComponentModel.ISupportInitialize)(this.recordDataObjectBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.recordsDataObjectsFormBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.recordDataObjectBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.recordsDataObjectsFormBindingSource)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.rdoView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.rdoView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -193,4 +192,3 @@
         private System.Windows.Forms.DataGridView rdoView;
     }
 }
-

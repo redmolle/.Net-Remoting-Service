@@ -1,7 +1,5 @@
-﻿namespace Client
-{
-    partial class RecordDataEditor
-    {
+namespace Client {
+    partial class RecordDataEditor {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -11,10 +9,8 @@
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -26,8 +22,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             this.StringField = new System.Windows.Forms.TextBox();
             this.DateField = new System.Windows.Forms.DateTimePicker();
             this.Strip = new System.Windows.Forms.StatusStrip();
@@ -55,8 +50,9 @@
             // Strip
             // 
             this.Strip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1,
-            this.RecordID});
+                this.toolStripStatusLabel1,
+                    this.RecordID
+            });
             this.Strip.Location = new System.Drawing.Point(0, 112);
             this.Strip.Name = "Strip";
             this.Strip.Size = new System.Drawing.Size(380, 22);
